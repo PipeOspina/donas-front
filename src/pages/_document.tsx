@@ -3,16 +3,30 @@ import createEmotionCache from '@/utils/createEmotionCache';
 import createEmotionServer from '@emotion/server/create-instance';
 import Document, { Head, Html, Main, NextScript } from 'next/document';
 
-export default class MyDocument extends Document<{ emotionStyleTags?: JSX.Element[] }> {
+export default class MyDocument extends Document<{
+  emotionStyleTags?: JSX.Element[];
+}> {
   render() {
     const { emotionStyleTags } = this.props;
 
     return (
-      <Html lang="es" className={roboto.className}>
+      <Html
+        lang="es"
+        className={roboto.className}
+      >
         <Head>
-          <meta name="theme-color" content={theme.palette.primary.main} />
-          <link rel="shortcut icon" href="/favicon.ico" />
-          <meta name="emotion-insertion-point" content="" />
+          <meta
+            name="theme-color"
+            content={theme.palette.primary.main}
+          />
+          <link
+            rel="shortcut icon"
+            href="/favicon.ico"
+          />
+          <meta
+            name="emotion-insertion-point"
+            content=""
+          />
           {emotionStyleTags}
         </Head>
         <body>
@@ -58,9 +72,15 @@ MyDocument.getInitialProps = async (ctx) => {
 
   ctx.renderPage = () =>
     originalRenderPage({
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       enhanceApp: (App: any) =>
         function EnhanceApp(props) {
-          return <App emotionCache={cache} {...props} />;
+          return (
+            <App
+              emotionCache={cache}
+              {...props}
+            />
+          );
         },
     });
 
