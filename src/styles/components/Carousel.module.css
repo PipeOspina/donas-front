@@ -1,0 +1,12 @@
+.container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  overflow: scroll;
+  scroll-behavior: smooth;
+  display: flex;
+  white-space: nowrap;
+}
+
+.container::-webkit-scrollbar {
+  display: none;
+}

@@ -1,24 +1,20 @@
-import { MakeOrderStepper } from '@/components';
+import { MakeOrderAppBar, MakeOrderStepper, ProductSelect } from '@/components';
 import { MakeOrderForm } from '@/types';
 import Head from 'next/head';
-import { useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 
 const MakeOrder = () => {
   const formMethods = useForm<MakeOrderForm>({
-    defaultValues: { steps: { activeStep: 0, completedSteps: [] } },
+    defaultValues: {
+      steps: { activeStep: 0, completedSteps: [] },
+      selectedProducts: [],
+    },
+    mode: 'all',
   });
 
-  const { setValue, getValues } = formMethods;
+  const { watch } = formMethods;
 
-  useEffect(() => {
-    setValue('steps.completedSteps', [
-      ...getValues().steps.completedSteps,
-      0,
-      1,
-      2,
-    ]);
-  }, []);
+  const activeStep = watch('steps.activeStep');
 
   return (
     <>
@@ -30,7 +26,11 @@ const MakeOrder = () => {
         />
       </Head>
       <FormProvider {...formMethods}>
-        <MakeOrderStepper />
+        <div style={{ width: '100%', paddingTop: 24, paddingBottom: 64 + 8 }}>
+          <MakeOrderStepper />
+          {activeStep === 0 && <ProductSelect />}
+        </div>
+        <MakeOrderAppBar />
       </FormProvider>
     </>
   );

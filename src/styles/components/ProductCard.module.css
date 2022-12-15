@@ -1,0 +1,23 @@
+.flexCenter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.image {
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.container {
+  padding: 16px 16px 8px 16px;
+}
+
+.labels {
+  margin: 16px 8px 8px 8px;
+}
+
+.selectedLabels {
+  color: white;
+}

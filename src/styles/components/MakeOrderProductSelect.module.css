@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+.title {
+  margin-top: 32px;
+  margin-bottom: 32px;
+}
+
+.selectedProductsTitle {
+  margin-top: 32px;
+  margin-bottom: 16px;
+}
+
+.selectedProducts {
+  margin-top: 8px;
+  padding: 16px;
+}
+
+.quantityCard {
+  margin-top: 8px;
+}
+
+.total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}

@@ -1,0 +1,8 @@
+.container {
+  top: auto;
+  bottom: 0;
+}
+
+.toolbar {
+  justify-content: space-between;
+}

@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.container > *:not(:last-child) {
+  margin-right: 8px;
+}
+
+.verticalControls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.smallControl {
+  width: 18px;
+  height: 18px;
+}
+
+.smallControl > svg {
+  font-size: 14px;
+}
+
+.helperTextHeight {
+  height: 19.91px;
+}

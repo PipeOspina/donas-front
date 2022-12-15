@@ -3,6 +3,15 @@ import { red } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
 import { Roboto } from '@next/font/google';
 
+declare module '@mui/material/styles' {
+  interface Palette {
+    silver: Palette['primary'];
+  }
+  interface PaletteOptions {
+    silver?: PaletteOptions['primary'];
+  }
+}
+
 export const roboto = Roboto({
   weight: ['300', '400', '500', '700'],
   subsets: ['latin'],
@@ -20,6 +29,9 @@ const palette: PaletteOptions = {
   },
   error: {
     main: red.A400,
+  },
+  silver: {
+    main: 'rgba(0, 0, 0, 0.23)',
   },
 };
 

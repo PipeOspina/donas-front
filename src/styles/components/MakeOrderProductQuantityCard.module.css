@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.marginTop {
+  margin-top: 8px;
+}
+
+.quantityField {
+  margin-left: 16px;
+}
+
+.errorMessage {
+  margin: 8px;
+}
