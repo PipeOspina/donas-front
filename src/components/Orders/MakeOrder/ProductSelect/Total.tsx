@@ -2,7 +2,7 @@ import { MakeOrderForm } from '@/types';
 import { formatPrice } from '@/utils/formats';
 import { useFormContext } from 'react-hook-form';
 
-const ProductSelectTotal = () => {
+const MakeOrderProductSelectTotal = () => {
   const { watch } = useFormContext<MakeOrderForm>();
   const selectedProducts = watch('selectedProducts');
 
@@ -14,4 +14,4 @@ const ProductSelectTotal = () => {
   return <>{formatPrice(total)}</>;
 };
 
-export default ProductSelectTotal;
+export default MakeOrderProductSelectTotal;

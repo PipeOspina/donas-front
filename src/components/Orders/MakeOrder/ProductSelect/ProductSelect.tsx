@@ -12,8 +12,8 @@ import {
 import { useCallback, useId } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { TransitionGroup } from 'react-transition-group';
-import MakeOrderProductQuantityCard from './ProductQuantityCard';
-import ProductSelectTotal from './Total';
+import MakeOrderProductSelectQuantityCard from './QuantityCard';
+import MakeOrderProductSelectTotal from './Total';
 
 const products: IProduct[] = Array(15).fill({
   image: {
@@ -97,7 +97,7 @@ export const MakeOrderProductSelect = () => {
         <TransitionGroup>
           {selectedProducts.map((productField, i) => (
             <Collapse key={productField.id}>
-              <MakeOrderProductQuantityCard
+              <MakeOrderProductSelectQuantityCard
                 field={productField}
                 index={i}
                 min={minProductQuantity}
@@ -127,7 +127,7 @@ export const MakeOrderProductSelect = () => {
             variant="h6"
             color="primary"
           >
-            <ProductSelectTotal />
+            <MakeOrderProductSelectTotal />
           </Typography>
         </div>
       </Collapse>

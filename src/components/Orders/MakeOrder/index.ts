@@ -1,3 +1,3 @@
 export { default as MakeOrderAppBar } from './AppBar';
-export { default as MakeOrderStepper } from './MakeOrderStepper';
-export { default as ProductSelect } from './ProductSelect';
+export { default as MakeOrderStepper } from './Stepper';
+export * from './ProductSelect';

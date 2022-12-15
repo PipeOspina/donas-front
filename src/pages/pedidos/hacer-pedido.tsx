@@ -1,4 +1,8 @@
-import { MakeOrderAppBar, MakeOrderStepper, ProductSelect } from '@/components';
+import {
+  MakeOrderAppBar,
+  MakeOrderProductSelect,
+  MakeOrderStepper,
+} from '@/components';
 import { MakeOrderForm } from '@/types';
 import Head from 'next/head';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -28,7 +32,7 @@ const MakeOrder = () => {
       <FormProvider {...formMethods}>
         <div style={{ width: '100%', paddingTop: 24, paddingBottom: 64 + 8 }}>
           <MakeOrderStepper />
-          {activeStep === 0 && <ProductSelect />}
+          {activeStep === 0 && <MakeOrderProductSelect />}
         </div>
         <MakeOrderAppBar />
       </FormProvider>

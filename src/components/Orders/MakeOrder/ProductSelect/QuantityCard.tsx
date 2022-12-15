@@ -20,19 +20,16 @@ const textStyles: CSSProperties = {
   whiteSpace: 'nowrap',
 };
 
-export interface MakeOrderProductQuantityCardProps {
+export interface MakeOrderProductSelectQuantityCardProps {
   field: FieldArrayWithId<MakeOrderForm, 'selectedProducts', 'id'>;
   min?: number;
   index: number;
   isMobile?: boolean;
 }
 
-const MakeOrderProductQuantityCard: FC<MakeOrderProductQuantityCardProps> = ({
-  field,
-  min,
-  index,
-  isMobile,
-}) => {
+const MakeOrderProductSelectQuantityCard: FC<
+  MakeOrderProductSelectQuantityCardProps
+> = ({ field, min, index, isMobile }) => {
   const [isFocus, setIsFocus] = useState(false);
 
   const { control } = useFormContext<MakeOrderForm>();
@@ -106,6 +103,8 @@ const MakeOrderProductQuantityCard: FC<MakeOrderProductQuantityCardProps> = ({
                   maxError=""
                   controlsPlacement={isMobile ? 'start-end' : 'end'}
                   label="Cantidad"
+                  decimalScale={0}
+                  allowNegative={false}
                   min={min}
                 />
               </div>
@@ -127,4 +126,4 @@ const MakeOrderProductQuantityCard: FC<MakeOrderProductQuantityCardProps> = ({
   );
 };
 
-export default MakeOrderProductQuantityCard;
+export default MakeOrderProductSelectQuantityCard;
