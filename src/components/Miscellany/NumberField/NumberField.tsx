@@ -1,3 +1,4 @@
+import { useHelperText } from '@/hooks';
 import styles from '@/styles/components/NumberField.module.css';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -13,13 +14,11 @@ import {
   forwardRef,
   useCallback,
   useEffect,
-  useId,
   useMemo,
   useRef,
   useState,
 } from 'react';
 import { NumericFormat, NumericFormatProps } from 'react-number-format';
-import { TransitionGroup } from 'react-transition-group';
 
 export type NumberFieldProps = Omit<
   TextFieldProps,
@@ -39,7 +38,7 @@ export type NumberFieldProps = Omit<
   };
 
 const NumberField = forwardRef<HTMLDivElement, NumberFieldProps>(
-  (
+  function NumberField(
     {
       hideControls,
       value,
@@ -53,11 +52,9 @@ const NumberField = forwardRef<HTMLDivElement, NumberFieldProps>(
       ...props
     },
     ref,
-  ) => {
+  ) {
     const [valueState, setValueState] = useState(value);
     const [focus, setFocus] = useState(false);
-
-    const id = useId();
 
     const valueRef = useRef(valueState);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -104,6 +101,9 @@ const NumberField = forwardRef<HTMLDivElement, NumberFieldProps>(
         props.helperText,
       [minErrorProps, minError, props.helperText, maxError, maxErrorProps],
     );
+
+    const { Component: HelperText, customProps: helperTextProps } =
+      useHelperText(helperText);
 
     const handleChangeValue = useCallback(
       (currentValue?: number) => {
@@ -247,22 +247,8 @@ const NumberField = forwardRef<HTMLDivElement, NumberFieldProps>(
             setFocus(false);
           }}
           error={error}
-          FormHelperTextProps={
-            {
-              component: 'span',
-            } as any
-          }
-          helperText={
-            <TransitionGroup>
-              {[helperText]
-                .filter((text) => !!text)
-                .map((text) => (
-                  <Collapse key={`NUMBER_FIELD_HELPER_TEXT_${id}`}>
-                    {text}
-                  </Collapse>
-                ))}
-            </TransitionGroup>
-          }
+          FormHelperTextProps={helperTextProps}
+          helperText={HelperText}
         />
         <Zoom in={!hideControls}>
           <div>

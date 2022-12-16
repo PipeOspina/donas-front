@@ -13,6 +13,18 @@ export interface MakeOrderForm {
     };
     quantity?: number;
   }[];
+  billingInformation: {
+    billingType: 'electronic' | 'charge';
+    email: string;
+    documentType: 'nit' | 'personal' | '';
+    documentNumber: string;
+    businessName: string;
+    name: string;
+    lastName: string;
+    phoneNumber: number;
+    rut?: string;
+    rutEmail?: string;
+  };
 }
 
 export interface IStep {

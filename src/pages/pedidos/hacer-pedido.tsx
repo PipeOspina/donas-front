@@ -1,5 +1,6 @@
 import {
   MakeOrderAppBar,
+  MakeOrderBilling,
   MakeOrderProductSelect,
   MakeOrderStepper,
 } from '@/components';
@@ -11,9 +12,29 @@ const MakeOrder = () => {
   const formMethods = useForm<MakeOrderForm>({
     defaultValues: {
       steps: { activeStep: 0, completedSteps: [] },
-      selectedProducts: [],
+      selectedProducts: [
+        {
+          image: {
+            alt: '',
+            src: 'https://cdn.colombia.com/gastronomia/2011/08/04/natilla-3039.jpg',
+          },
+          name: 'Natilla',
+          price: 5000,
+          quantity: 30,
+          index: 0,
+        },
+      ],
+      billingInformation: {
+        billingType: 'charge',
+        documentNumber: undefined,
+        documentType: '',
+        email: '',
+        lastName: '',
+        name: '',
+        phoneNumber: undefined,
+        businessName: '',
+      },
     },
-    mode: 'all',
   });
 
   const { watch } = formMethods;
@@ -33,6 +54,7 @@ const MakeOrder = () => {
         <div style={{ width: '100%', paddingTop: 24, paddingBottom: 64 + 8 }}>
           <MakeOrderStepper />
           {activeStep === 0 && <MakeOrderProductSelect />}
+          {activeStep === 1 && <MakeOrderBilling />}
         </div>
         <MakeOrderAppBar />
       </FormProvider>

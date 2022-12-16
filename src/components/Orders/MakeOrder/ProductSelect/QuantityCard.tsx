@@ -8,7 +8,9 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  Theme,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import clsx from 'clsx';
 import { CSSProperties, FC, useCallback, useState } from 'react';
@@ -20,29 +22,30 @@ const textStyles: CSSProperties = {
   whiteSpace: 'nowrap',
 };
 
+const min = 30;
+
 export interface MakeOrderProductSelectQuantityCardProps {
   field: FieldArrayWithId<MakeOrderForm, 'selectedProducts', 'id'>;
-  min?: number;
   index: number;
-  isMobile?: boolean;
 }
 
 const MakeOrderProductSelectQuantityCard: FC<
   MakeOrderProductSelectQuantityCardProps
-> = ({ field, min, index, isMobile }) => {
+> = ({ field, index }) => {
   const [isFocus, setIsFocus] = useState(false);
 
   const { control } = useFormContext<MakeOrderForm>();
 
+  const isMobile = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down('sm'),
+  );
+
   const { name, price, image } = field;
 
-  const handleValidate = useCallback(
-    (value?: number) => {
-      const isValid = Boolean(value && value >= (min ?? 0));
-      return isValid;
-    },
-    [min],
-  );
+  const handleValidate = useCallback((value?: number) => {
+    const isValid = Boolean(value && value >= (30 ?? 0));
+    return isValid;
+  }, []);
 
   return (
     <Controller

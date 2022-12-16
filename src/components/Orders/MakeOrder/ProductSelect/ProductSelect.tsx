@@ -12,6 +12,7 @@ import {
 import { useCallback, useId } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { TransitionGroup } from 'react-transition-group';
+import MakeOrderProductSelectError from './Error';
 import MakeOrderProductSelectQuantityCard from './QuantityCard';
 import MakeOrderProductSelectTotal from './Total';
 
@@ -81,6 +82,7 @@ export const MakeOrderProductSelect = () => {
         })}
         arrowColor="primary"
       />
+      <MakeOrderProductSelectError />
       <Collapse in={!!selectedProducts.length}>
         <Typography
           variant="h6"
@@ -100,8 +102,6 @@ export const MakeOrderProductSelect = () => {
               <MakeOrderProductSelectQuantityCard
                 field={productField}
                 index={i}
-                min={minProductQuantity}
-                isMobile={isMobile}
               />
             </Collapse>
           ))}

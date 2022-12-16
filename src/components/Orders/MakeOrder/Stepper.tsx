@@ -31,7 +31,12 @@ const MakeOrderStepper = () => {
   const {
     setValue,
     watch,
-    formState: { errors },
+    formState: {
+      errors: {
+        selectedProducts: selectedProductsErrors,
+        billingInformation: billingInformationErrors,
+      },
+    },
   } = useFormContext<MakeOrderForm>();
 
   const { activeStep, completedSteps } = watch('steps');
@@ -42,7 +47,8 @@ const MakeOrderStepper = () => {
 
   const stepErrors: number[] = [];
 
-  if (errors.selectedProducts) stepErrors.push(0);
+  if (selectedProductsErrors) stepErrors.push(0);
+  if (billingInformationErrors) stepErrors.push(1);
 
   const id = useId();
 

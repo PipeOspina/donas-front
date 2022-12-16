@@ -1,59 +1,44 @@
-import { AppBar, Button, Toolbar, Zoom } from '@mui/material';
-
 import styles from '@/styles/components/MakeOrderAppBar.module.css';
 import { MakeOrderForm } from '@/types';
-import { useCallback, useEffect, useMemo } from 'react';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import {
+  AppBar,
+  Button,
+  IconButton,
+  Theme,
+  Toolbar,
+  useMediaQuery,
+  Zoom,
+} from '@mui/material';
+import { useCallback, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 
 const MakeOrderAppBar = () => {
-  const {
-    watch,
-    formState: {
-      errors: { selectedProducts: selectedProductsErrors },
-    },
-    handleSubmit,
-    setValue,
-  } = useFormContext<MakeOrderForm>();
+  const { watch, handleSubmit, setValue } = useFormContext<MakeOrderForm>();
 
   const { activeStep, completedSteps } = watch('steps');
 
   const isCompleteStep = useMemo(() => activeStep === 3, [activeStep]);
-  const disableNext = useMemo(() => {
-    switch (activeStep) {
-      case 0:
-        return !!selectedProductsErrors;
-      default:
-        return false;
-    }
-  }, [activeStep, selectedProductsErrors]);
+
+  const isMobile = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down('sm'),
+  );
+
+  const handleNext = useMemo(
+    () =>
+      handleSubmit(() => {
+        setValue('steps', {
+          activeStep: activeStep + 1,
+          completedSteps: [...completedSteps, activeStep],
+        });
+      }),
+    [handleSubmit, activeStep, completedSteps, setValue],
+  );
 
   const handleBefore = useCallback(() => {
     setValue('steps.activeStep', activeStep - 1);
   }, [setValue, activeStep]);
-
-  const handleNext = useCallback(() => {
-    isCompleteStep
-      ? handleSubmit
-      : setValue('steps.activeStep', activeStep + 1);
-    if (!disableNext)
-      setValue('steps.completedSteps', [...completedSteps, activeStep]);
-  }, [
-    handleSubmit,
-    setValue,
-    isCompleteStep,
-    activeStep,
-    completedSteps,
-    disableNext,
-  ]);
-
-  useEffect(() => {
-    if (selectedProductsErrors)
-      setValue(
-        'steps.completedSteps',
-        completedSteps.filter((completedIndex) => completedIndex !== 0),
-      );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedProductsErrors, setValue]);
 
   return (
     <AppBar
@@ -63,22 +48,41 @@ const MakeOrderAppBar = () => {
     >
       <Toolbar className={styles.toolbar}>
         <Zoom in={activeStep !== 0}>
+          {isMobile ? (
+            <IconButton
+              color="inherit"
+              onClick={handleBefore}
+            >
+              <ArrowBackIcon />
+            </IconButton>
+          ) : (
+            <Button
+              color="inherit"
+              variant="outlined"
+              onClick={handleBefore}
+              startIcon={<ArrowBackIcon />}
+            >
+              Anterior
+            </Button>
+          )}
+        </Zoom>
+        {isMobile ? (
+          <IconButton
+            color="inherit"
+            onClick={handleNext}
+          >
+            <ArrowForwardIcon />
+          </IconButton>
+        ) : (
           <Button
             color="inherit"
             variant="outlined"
-            onClick={handleBefore}
+            onClick={handleNext}
+            endIcon={<ArrowForwardIcon />}
           >
-            Anterior
+            {isCompleteStep ? 'Completar' : 'Siguiente'}
           </Button>
-        </Zoom>
-        <Button
-          color="inherit"
-          variant="outlined"
-          disabled={disableNext}
-          onClick={handleNext}
-        >
-          {isCompleteStep ? 'Completar' : 'Siguiente'}
-        </Button>
+        )}
       </Toolbar>
     </AppBar>
   );
