@@ -23,7 +23,8 @@ import MakeOrderBillingRutFields from './RutFields';
 const spacing = 2;
 
 const MakeOrderBillingFields = () => {
-  const { control, setValue, clearErrors } = useFormContext<MakeOrderForm>();
+  const { control, resetField, setValue, clearErrors } =
+    useFormContext<MakeOrderForm>();
 
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('sm'),
@@ -57,8 +58,7 @@ const MakeOrderBillingFields = () => {
                       if (type === 'electronic') {
                         setValue('billingInformation.documentType', 'nit');
                         clearErrors('billingInformation.documentType');
-                        setValue('billingInformation.documentNumber', '');
-                        clearErrors('billingInformation.documentNumber');
+                        resetField('billingInformation.documentNumber');
                       }
                     }}
                     row

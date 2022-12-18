@@ -4,6 +4,7 @@ import {
   MakeOrderProductSelect,
   MakeOrderStepper,
 } from '@/components';
+import { MakeOrderShipping } from '@/components/Orders/MakeOrder/Shipping';
 import { MakeOrderForm } from '@/types';
 import Head from 'next/head';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -26,13 +27,25 @@ const MakeOrder = () => {
       ],
       billingInformation: {
         billingType: 'charge',
-        documentNumber: undefined,
-        documentType: '',
+        documentNumber: null,
+        documentType: null,
         email: '',
         lastName: '',
         name: '',
-        phoneNumber: undefined,
+        phoneNumber: null,
         businessName: '',
+        rut: null,
+        rutEmail: null,
+      },
+      shippingInformation: {
+        address: '',
+        city: null,
+        details: null,
+        lastName: null,
+        name: null,
+        neighborhood: '',
+        phoneNumber: null,
+        date: null,
       },
     },
   });
@@ -55,6 +68,7 @@ const MakeOrder = () => {
           <MakeOrderStepper />
           {activeStep === 0 && <MakeOrderProductSelect />}
           {activeStep === 1 && <MakeOrderBilling />}
+          {activeStep === 2 && <MakeOrderShipping />}
         </div>
         <MakeOrderAppBar />
       </FormProvider>

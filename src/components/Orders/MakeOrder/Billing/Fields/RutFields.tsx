@@ -17,7 +17,7 @@ import {
   useFormContext,
 } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
-import { MakeOrderTextControl } from '../../Controls';
+import { MakeOrderEmailControl } from '../../Controls';
 
 export interface CustomNumberFieldProps {
   field: ControllerRenderProps<MakeOrderForm, 'billingInformation.rut'>;
@@ -78,8 +78,7 @@ const MakeOrderBillingRutFields: FC<MakeOrderBillingRutFieldsProps> = ({
 }) => {
   const [isDifferentEmail, setIsDifferentEmail] = useState(false);
 
-  const { control, watch, setValue, clearErrors } =
-    useFormContext<MakeOrderForm>();
+  const { control, watch, resetField } = useFormContext<MakeOrderForm>();
 
   const billingType = watch('billingInformation.billingType');
 
@@ -118,10 +117,10 @@ const MakeOrderBillingRutFields: FC<MakeOrderBillingRutFieldsProps> = ({
                 onChange={() =>
                   setIsDifferentEmail((current) => {
                     if (current)
-                      setTimeout(() => {
-                        setValue('billingInformation.rutEmail', '');
-                        clearErrors('billingInformation.rutEmail');
-                      }, 500);
+                      setTimeout(
+                        () => resetField('billingInformation.rutEmail'),
+                        500,
+                      );
                     return !current;
                   })
                 }
@@ -134,11 +133,10 @@ const MakeOrderBillingRutFields: FC<MakeOrderBillingRutFieldsProps> = ({
             in={isDifferentEmail}
             style={{ paddingTop: 1 }}
           >
-            <MakeOrderTextControl
+            <MakeOrderEmailControl
               label="Correo electrónico alternativo"
               name="billingInformation.rutEmail"
               required={isDifferentEmail && billingType === 'electronic'}
-              trim
             />
           </Collapse>
         </Grid>

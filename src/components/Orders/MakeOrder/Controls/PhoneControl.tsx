@@ -11,14 +11,17 @@ import {
 import { PatternFormat } from 'react-number-format';
 
 export interface CustomNumberFieldProps {
-  field: ControllerRenderProps<MakeOrderForm, 'billingInformation.phoneNumber'>;
+  field: ControllerRenderProps<
+    MakeOrderForm,
+    'billingInformation.phoneNumber' | 'shippingInformation.phoneNumber'
+  >;
   required?: boolean;
   error?: FieldError;
   label: string;
 }
 
 export const CustomNumberField: FC<CustomNumberFieldProps> = ({
-  field: { onBlur, onChange, ref, ...field },
+  field: { value, onBlur, onChange, ref, name },
   label,
   error,
   required,
@@ -33,8 +36,8 @@ export const CustomNumberField: FC<CustomNumberFieldProps> = ({
 
   return (
     <PatternFormat
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      {...(field as any)}
+      value={value ?? ''}
+      name={name}
       customInput={TextField}
       inputProps={{
         ref,
@@ -49,8 +52,13 @@ export const CustomNumberField: FC<CustomNumberFieldProps> = ({
       format="(###) ### ####"
       onBlur={() => {
         onBlur();
-        if (field.value <= 9999999 && field.value > 1000000)
-          onChange({ target: { value: 6040000000 + field.value } });
+        if (!value && required) onChange({ target: { value } });
+        if (value && value <= 9999999 && value > 1000000)
+          onChange({
+            target: {
+              value: value ? 6040000000 + value : value,
+            },
+          });
       }}
       onValueChange={({ floatValue }) =>
         onChange({ target: { value: floatValue ?? null } })
@@ -60,7 +68,7 @@ export const CustomNumberField: FC<CustomNumberFieldProps> = ({
 };
 
 export interface MakeOrderPhoneControlProps {
-  name: 'billingInformation.phoneNumber';
+  name: 'billingInformation.phoneNumber' | 'shippingInformation.phoneNumber';
   required?: boolean;
   label: string;
 }
@@ -88,7 +96,10 @@ const MakeOrderPhoneControl: FC<MakeOrderPhoneControlProps> = ({
         required: { message: 'Requerido', value: !!required },
         validate: {
           phone: (value) =>
-            value < 1000000 || (value >= 1000000 && value < 3000000000)
+            !value && required
+              ? 'Requerido'
+              : value &&
+                (value < 1000000 || (value >= 1000000 && value < 3000000000))
               ? 'Teléfono inválido'
               : undefined,
         },

@@ -5,6 +5,7 @@ const nextConfig = {
   images: {
     domains: ['cdn.colombia.com'],
   },
+  distDir: 'build',
 };
 
 module.exports = nextConfig;

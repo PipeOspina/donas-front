@@ -1,6 +1,9 @@
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import esES from 'date-fns/locale/es';
 import { AppProps } from 'next/app';
 import Head from 'next/head';
 import theme from '../styles/theme';
@@ -24,9 +27,14 @@ export default function MyApp(props: MyAppProps) {
         />
       </Head>
       <ThemeProvider theme={theme}>
-        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-        <CssBaseline />
-        <Component {...pageProps} />
+        <LocalizationProvider
+          dateAdapter={AdapterDateFns}
+          adapterLocale={esES}
+        >
+          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+          <CssBaseline />
+          <Component {...pageProps} />
+        </LocalizationProvider>
       </ThemeProvider>
     </CacheProvider>
   );

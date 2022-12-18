@@ -31,7 +31,7 @@ export interface CustomNumberFieldProps {
 }
 
 export const CustomNumberField: FC<CustomNumberFieldProps> = ({
-  field: { onChange, onBlur, ref, ...field },
+  field: { value, onChange, onBlur, ref, ...field },
   error,
   required,
 }) => {
@@ -52,6 +52,7 @@ export const CustomNumberField: FC<CustomNumberFieldProps> = ({
   return (
     <NumericFormat
       {...field}
+      value={value ?? ''}
       customInput={TextField}
       inputProps={{
         ref,
@@ -59,7 +60,13 @@ export const CustomNumberField: FC<CustomNumberFieldProps> = ({
       size={isMobile ? 'small' : undefined}
       required={required}
       error={!!error}
-      label={documentType === 'nit' ? 'NIT' : 'Cédula'}
+      label={
+        documentType
+          ? documentType === 'nit'
+            ? 'NIT'
+            : 'Cédula'
+          : 'Número de documento'
+      }
       FormHelperTextProps={customProps}
       helperText={Component}
       fullWidth
@@ -70,6 +77,7 @@ export const CustomNumberField: FC<CustomNumberFieldProps> = ({
       decimalSeparator=","
       thousandsGroupStyle="thousand"
       valueIsNumericString
+      disabled={!documentType}
       onFocus={() => setIsFocus(true)}
       onBlur={() => {
         onBlur();
@@ -92,7 +100,7 @@ export const CustomNumberField: FC<CustomNumberFieldProps> = ({
                 <Typography
                   color={error ? 'error' : isFocus ? 'primary' : undefined}
                 >
-                  {field.value ? calculateNitDV(field.value) : 'DV'}
+                  {value ? calculateNitDV(value) : 'DV'}
                 </Typography>
               </Tooltip>
             </div>
@@ -117,11 +125,11 @@ export interface CustomSelectFieldProps {
 }
 
 export const CustomSelectField: FC<CustomSelectFieldProps> = ({
-  field,
+  field: { value, ...field },
   error,
   required,
 }) => {
-  const { watch, setValue, clearErrors } = useFormContext<MakeOrderForm>();
+  const { watch, resetField } = useFormContext<MakeOrderForm>();
 
   const id = useId();
 
@@ -138,6 +146,7 @@ export const CustomSelectField: FC<CustomSelectFieldProps> = ({
   return (
     <TextField
       {...field}
+      value={value ?? ''}
       size={isMobile ? 'small' : undefined}
       required={required}
       error={!!error}
@@ -149,13 +158,9 @@ export const CustomSelectField: FC<CustomSelectFieldProps> = ({
       disabled={billingType === 'electronic'}
       onChange={(event) => {
         field.onChange(event);
-        setValue('billingInformation.documentNumber', '');
-        clearErrors('billingInformation.documentNumber');
+        resetField('billingInformation.documentNumber');
         if (event.target.value !== 'nit')
-          setTimeout(() => {
-            setValue('billingInformation.businessName', '');
-            clearErrors('billingInformation.businessName');
-          }, 500);
+          setTimeout(() => resetField('billingInformation.businessName'), 500);
       }}
     >
       {['nit', 'personal'].map((type, i) => (

@@ -18,15 +18,19 @@ export interface CustomTextFieldProps {
   label: string;
   capitalize?: boolean;
   trim?: boolean;
+  multiline?: boolean;
+  rows?: number;
 }
 
 export const CustomTextField: FC<CustomTextFieldProps> = ({
-  field: { onBlur, ref, ...field },
+  field: { value, onBlur, ref, ...field },
   label,
   error,
   required,
   capitalize: capitalizeProps,
   trim,
+  multiline,
+  rows,
 }) => {
   const { Component, customProps } = useHelperText(
     error ? error.message : undefined,
@@ -39,6 +43,7 @@ export const CustomTextField: FC<CustomTextFieldProps> = ({
   return (
     <TextField
       {...field}
+      value={value ?? ''}
       size={isMobile ? 'small' : undefined}
       inputProps={{
         ref,
@@ -46,9 +51,7 @@ export const CustomTextField: FC<CustomTextFieldProps> = ({
       onBlur={() => {
         onBlur();
         const trimmedValue =
-          trim && typeof field.value === 'string'
-            ? field.value.trim()
-            : field.value;
+          trim && typeof value === 'string' ? value.trim() : value;
 
         const capitalizedValue =
           capitalizeProps && typeof trimmedValue === 'string'
@@ -62,6 +65,8 @@ export const CustomTextField: FC<CustomTextFieldProps> = ({
             },
           });
       }}
+      multiline={multiline}
+      rows={rows}
       required={required}
       error={!!error}
       label={label}
@@ -78,6 +83,8 @@ export interface MakeOrderTextControlProps {
   label: string;
   capitalize?: boolean;
   trim?: boolean;
+  multiline?: boolean;
+  rows?: number;
 }
 
 const MakeOrderTextControl: FC<MakeOrderTextControlProps> = ({
@@ -86,6 +93,8 @@ const MakeOrderTextControl: FC<MakeOrderTextControlProps> = ({
   label,
   trim,
   capitalize: capitalizeProps,
+  multiline,
+  rows,
 }) => {
   const { control } = useFormContext<MakeOrderForm>();
 
@@ -100,6 +109,8 @@ const MakeOrderTextControl: FC<MakeOrderTextControlProps> = ({
           required={required}
           capitalize={capitalizeProps}
           trim={trim}
+          multiline={multiline}
+          rows={rows}
         />
       )}
       control={control}

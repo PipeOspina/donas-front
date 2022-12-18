@@ -21,6 +21,7 @@ const steps: IStep[] = [
   },
   {
     label: 'Envío',
+    helper: 'Información de envío',
   },
   {
     label: 'Pago',
