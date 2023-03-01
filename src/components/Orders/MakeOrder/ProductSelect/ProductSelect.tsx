@@ -1,7 +1,5 @@
-import { Carousel } from '@/components/Miscellany';
-import { ProductCard } from '@/components/Products';
 import styles from '@/styles/components/MakeOrderProductSelect.module.css';
-import { IProduct, MakeOrderForm } from '@/types';
+import { MakeOrderForm } from '@/types';
 import {
   Collapse,
   List,
@@ -9,26 +7,16 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
-import { useCallback, useId } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { TransitionGroup } from 'react-transition-group';
+import MakeOrderProductSelectCarousel from './Carousel';
 import MakeOrderProductSelectError from './Error';
 import MakeOrderProductSelectQuantityCard from './QuantityCard';
 import MakeOrderProductSelectTotal from './Total';
 
-const products: IProduct[] = Array(15).fill({
-  image: {
-    alt: '',
-    src: 'https://cdn.colombia.com/gastronomia/2011/08/04/natilla-3039.jpg',
-  },
-  name: 'Natilla',
-  price: 5000,
-});
-
-const minProductQuantity = 30;
-
 export const MakeOrderProductSelect = () => {
   const { control } = useFormContext<MakeOrderForm>();
+
   const {
     append: addProduct,
     fields: selectedProducts,
@@ -41,25 +29,12 @@ export const MakeOrderProductSelect = () => {
     },
   });
 
-  const id = useId();
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('sm'),
   );
 
-  const toggleSelectProduct = useCallback(
-    (product: IProduct, index: number) => {
-      const productFieldIndex = selectedProducts.findIndex(
-        ({ index: i }) => index === i,
-      );
-      productFieldIndex >= 0
-        ? removeProduct(productFieldIndex)
-        : addProduct({ ...product, index, quantity: minProductQuantity });
-    },
-    [addProduct, removeProduct, selectedProducts],
-  );
-
   return (
-    <div className={styles.container}>
+    <section className={styles.container}>
       <Typography
         variant="h4"
         color="primary"
@@ -67,20 +42,10 @@ export const MakeOrderProductSelect = () => {
       >
         Selección de productos
       </Typography>
-      <Carousel
-        spacing={isMobile ? 0 : 2}
-        maxWidth={isMobile ? '100vw' : '80vw'}
-        elements={products.map((product, i) => {
-          return (
-            <ProductCard
-              key={`MAKE_ORDER_PRODUCT_SELECT_CAROUSEL_PRODUCT_CARD_${id}_${i}`}
-              product={product}
-              selected={selectedProducts.some(({ index }) => index === i)}
-              onClick={() => toggleSelectProduct(product, i)}
-            />
-          );
-        })}
-        arrowColor="primary"
+      <MakeOrderProductSelectCarousel
+        onAddProduct={addProduct}
+        onRemoveProduct={removeProduct}
+        selectedProducts={selectedProducts}
       />
       <MakeOrderProductSelectError />
       <Collapse in={!!selectedProducts.length}>
@@ -131,7 +96,7 @@ export const MakeOrderProductSelect = () => {
           </Typography>
         </div>
       </Collapse>
-    </div>
+    </section>
   );
 };
 

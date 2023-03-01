@@ -1,1 +1,1 @@
-export type { IProduct } from './Product';
+export type { ProductModel, ProductSpec } from './Product';

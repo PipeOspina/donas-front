@@ -1,7 +1,7 @@
 import { MakeOrderForm } from '@/types';
 import { Collapse, useTheme } from '@mui/material';
 import { FC } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import { MakeOrderTextControl } from '../../Controls';
 
 export interface MakeOrderBillingBusinessNameFieldProps {
@@ -11,9 +11,12 @@ export interface MakeOrderBillingBusinessNameFieldProps {
 const MakeOrderBillingBusinessNameField: FC<
   MakeOrderBillingBusinessNameFieldProps
 > = ({ spacing }) => {
-  const { watch } = useFormContext<MakeOrderForm>();
+  const { control } = useFormContext<MakeOrderForm>();
 
-  const documentType = watch('billingInformation.documentType');
+  const documentType = useWatch({
+    control,
+    name: 'billingInformation.documentType',
+  });
   const theme = useTheme();
 
   return (

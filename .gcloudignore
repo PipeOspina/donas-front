@@ -1,0 +1,9 @@
+.vscode
+.eslintrc.json
+.gitignore
+.prettierrc.json
+README.md
+tsconfig.json
+src/
+.next/
+node_modules/

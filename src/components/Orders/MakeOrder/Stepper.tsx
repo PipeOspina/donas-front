@@ -8,7 +8,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { useId } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 const steps: IStep[] = [
   {
@@ -31,7 +31,7 @@ const steps: IStep[] = [
 const MakeOrderStepper = () => {
   const {
     setValue,
-    watch,
+    control,
     formState: {
       errors: {
         selectedProducts: selectedProductsErrors,
@@ -40,7 +40,15 @@ const MakeOrderStepper = () => {
     },
   } = useFormContext<MakeOrderForm>();
 
-  const { activeStep, completedSteps } = watch('steps');
+  const activeStep = useWatch({
+    control,
+    name: 'steps.activeStep',
+  });
+
+  const completedSteps = useWatch({
+    control,
+    name: 'steps.completedSteps',
+  });
 
   const isMobile = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('sm'),

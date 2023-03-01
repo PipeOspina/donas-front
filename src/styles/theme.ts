@@ -13,6 +13,12 @@ declare module '@mui/material/styles' {
   interface PaletteOptions {
     silver?: PaletteOptions['primary'];
   }
+  interface PaletteColor {
+    ultraLight?: string;
+  }
+  interface SimplePaletteColorOptions {
+    ultraLight?: string;
+  }
 }
 
 export const roboto = Roboto({
@@ -26,6 +32,7 @@ const palette: PaletteOptions = {
   primary: {
     main: '#22B14C',
     contrastText: 'white',
+    ultraLight: '#CCE6D4',
   },
   secondary: {
     main: '#CD0111',

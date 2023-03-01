@@ -5,26 +5,23 @@ import {
   MakeOrderStepper,
 } from '@/components';
 import { MakeOrderShipping } from '@/components/Orders/MakeOrder/Shipping';
+import useCollection from '@/hooks/useCollection';
 import { MakeOrderForm } from '@/types';
+import { ProductModel } from '@/types/Products/Product';
+import { orderBy } from 'firebase/firestore';
 import Head from 'next/head';
-import { FormProvider, useForm } from 'react-hook-form';
+import { useEffect } from 'react';
+import { FormProvider, useForm, useWatch } from 'react-hook-form';
 
 const MakeOrder = () => {
   const formMethods = useForm<MakeOrderForm>({
     defaultValues: {
       steps: { activeStep: 0, completedSteps: [] },
-      selectedProducts: [
-        {
-          image: {
-            alt: '',
-            src: 'https://cdn.colombia.com/gastronomia/2011/08/04/natilla-3039.jpg',
-          },
-          name: 'Natilla',
-          price: 5000,
-          quantity: 30,
-          index: 0,
-        },
-      ],
+      products: {
+        products: [],
+        loading: true,
+      },
+      selectedProducts: [],
       billingInformation: {
         billingType: 'charge',
         documentNumber: null,
@@ -48,11 +45,31 @@ const MakeOrder = () => {
         date: null,
       },
     },
+    mode: 'all',
   });
 
-  const { watch } = formMethods;
+  const [productsSnapshot, { loading }] = useCollection<ProductModel>(
+    [orderBy('sortIndex')],
+    'products',
+  );
 
-  const activeStep = watch('steps.activeStep');
+  const activeStep = useWatch({
+    control: formMethods.control,
+    name: 'steps.activeStep',
+  });
+
+  useEffect(() => {
+    formMethods.setValue(
+      'products.products',
+      productsSnapshot?.docs.map((productDoc) => productDoc.data()) ?? [],
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [productsSnapshot]);
+
+  useEffect(() => {
+    formMethods.setValue('products.loading', loading);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading]);
 
   return (
     <>

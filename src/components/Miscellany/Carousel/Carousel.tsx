@@ -128,7 +128,8 @@ const Carousel: FC<CarouselProps> = ({
   const handleGoNext = useCallback(() => {
     if (containerRef.current) {
       const newScrollLeft =
-        containerRef.current.scrollLeft + containerRef.current.clientWidth;
+        containerRef.current.scrollLeft +
+        containerRef.current.clientWidth * 0.7;
       containerRef.current.scrollLeft = newScrollLeft;
       updateShow(newScrollLeft);
     }
@@ -137,7 +138,8 @@ const Carousel: FC<CarouselProps> = ({
   const handleGoBefore = useCallback(() => {
     if (containerRef.current) {
       const newScrollLeft =
-        containerRef.current.scrollLeft - containerRef.current.clientWidth;
+        containerRef.current.scrollLeft -
+        containerRef.current.clientWidth * 0.7;
       containerRef.current.scrollLeft = newScrollLeft;
       updateShow(newScrollLeft);
     }
@@ -156,6 +158,13 @@ const Carousel: FC<CarouselProps> = ({
       element && goToElement(element);
     }
   }, [selectedIndex, goToElement, idConstructor]);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      updateShow(containerRef.current.scrollLeft);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [elements]);
 
   return (
     <div

@@ -1,15 +1,9 @@
 import Link from '@/components/Link/Link';
-import Carousel from '@/components/Miscellany/Carousel/Carousel';
-import ProductCard from '@/components/Products/ProductCard/ProductCard';
 import styles from '@/styles/pages/index.module.css';
-import { Typography } from '@mui/material';
 import Head from 'next/head';
 import Image from 'next/image';
-import { useState } from 'react';
 
 export default function Home() {
-  const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
-
   return (
     <div className={styles.container}>
       <Head>
@@ -24,43 +18,7 @@ export default function Home() {
         />
       </Head>
 
-      <main className={styles.main}>
-        <Typography
-          variant="h1"
-          color="primary"
-        >
-          Donas front
-        </Typography>
-        <Typography>This is donas front</Typography>
-        <Carousel
-          elements={Array(15)
-            .fill(undefined)
-            .map((_, i) => (
-              <ProductCard
-                key={`x${i}`}
-                id={`x${i}`}
-                product={{
-                  image: {
-                    alt: '',
-                    src: 'https://cdn.colombia.com/gastronomia/2011/08/04/natilla-3039.jpg',
-                  },
-                  name:
-                    i === 5 ? 'Un super producto con nombre largo' : 'Natilla',
-                  price: 5000,
-                }}
-                selected={selectedProducts.includes(i)}
-                onClick={() =>
-                  setSelectedProducts((current) =>
-                    current.includes(i)
-                      ? current.filter((index) => index !== i)
-                      : [...current, i],
-                  )
-                }
-              />
-            ))}
-          width="47vw"
-        />
-      </main>
+      <main className={styles.main}>Holi</main>
 
       <footer className={styles.footer}>
         <Link

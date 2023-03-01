@@ -21,3 +21,12 @@
 .selectedLabels {
   color: white;
 }
+
+.disabledLabels {
+  color: rgba(0, 0, 0, 0.23);
+}
+
+.disabledImage {
+  filter: grayscale(100%);
+  opacity: 0.23;
+}

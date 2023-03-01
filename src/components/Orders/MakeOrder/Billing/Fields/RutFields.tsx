@@ -15,6 +15,7 @@ import {
   ControllerRenderProps,
   FieldError,
   useFormContext,
+  useWatch,
 } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
 import { MakeOrderEmailControl } from '../../Controls';
@@ -78,9 +79,12 @@ const MakeOrderBillingRutFields: FC<MakeOrderBillingRutFieldsProps> = ({
 }) => {
   const [isDifferentEmail, setIsDifferentEmail] = useState(false);
 
-  const { control, watch, resetField } = useFormContext<MakeOrderForm>();
+  const { control, resetField } = useFormContext<MakeOrderForm>();
 
-  const billingType = watch('billingInformation.billingType');
+  const billingType = useWatch({
+    control,
+    name: 'billingInformation.billingType',
+  });
 
   return (
     <Collapse in={billingType === 'electronic'}>

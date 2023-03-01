@@ -19,11 +19,21 @@ const cities = [
   },
   {
     id: '1',
-    name: 'Rionegro',
-    extraCost: 5500,
+    name: 'Caldas',
+    extraCost: 7000,
   },
   {
     id: '2',
+    name: 'Copacabana',
+    extraCost: 7000,
+  },
+  {
+    id: '3',
+    name: 'Girardota',
+    extraCost: 7000,
+  },
+  {
+    id: '4',
     name: 'Otro',
     extraCost: 0,
   },

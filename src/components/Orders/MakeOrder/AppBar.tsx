@@ -12,12 +12,20 @@ import {
   Zoom,
 } from '@mui/material';
 import { useCallback, useMemo } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 const MakeOrderAppBar = () => {
-  const { watch, handleSubmit, setValue } = useFormContext<MakeOrderForm>();
+  const { control, handleSubmit, setValue } = useFormContext<MakeOrderForm>();
 
-  const { activeStep, completedSteps } = watch('steps');
+  const activeStep = useWatch({
+    control,
+    name: 'steps.activeStep',
+  });
+
+  const completedSteps = useWatch({
+    control,
+    name: 'steps.completedSteps',
+  });
 
   const isCompleteStep = useMemo(() => activeStep === 3, [activeStep]);
 

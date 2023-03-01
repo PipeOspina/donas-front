@@ -17,6 +17,7 @@ import {
   ControllerRenderProps,
   FieldError,
   useFormContext,
+  useWatch,
 } from 'react-hook-form';
 import { NumericFormat } from 'react-number-format';
 import MakeOrderBillingBusinessNameField from './BusinessNameField';
@@ -37,7 +38,7 @@ export const CustomNumberField: FC<CustomNumberFieldProps> = ({
 }) => {
   const [isFocus, setIsFocus] = useState(false);
 
-  const { watch } = useFormContext<MakeOrderForm>();
+  const { control } = useFormContext<MakeOrderForm>();
 
   const { Component, customProps } = useHelperText(
     error ? error.message : undefined,
@@ -47,7 +48,10 @@ export const CustomNumberField: FC<CustomNumberFieldProps> = ({
     theme.breakpoints.down('sm'),
   );
 
-  const documentType = watch('billingInformation.documentType');
+  const documentType = useWatch({
+    control,
+    name: 'billingInformation.documentType',
+  });
 
   return (
     <NumericFormat
@@ -129,7 +133,7 @@ export const CustomSelectField: FC<CustomSelectFieldProps> = ({
   error,
   required,
 }) => {
-  const { watch, resetField } = useFormContext<MakeOrderForm>();
+  const { control, resetField } = useFormContext<MakeOrderForm>();
 
   const id = useId();
 
@@ -141,7 +145,10 @@ export const CustomSelectField: FC<CustomSelectFieldProps> = ({
     theme.breakpoints.down('sm'),
   );
 
-  const billingType = watch('billingInformation.billingType');
+  const billingType = useWatch({
+    control,
+    name: 'billingInformation.billingType',
+  });
 
   return (
     <TextField

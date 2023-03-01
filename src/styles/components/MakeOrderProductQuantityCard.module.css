@@ -4,6 +4,10 @@
   align-items: flex-end;
 }
 
+.listItem:hover {
+  outline-width: 2px;
+}
+
 .marginTop {
   margin-top: 8px;
 }
@@ -14,4 +18,26 @@
 
 .errorMessage {
   margin: 8px;
+}
+
+.image {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.action {
+  display: flex;
+  align-items: center;
+}
+
+.action span {
+  margin-bottom: -2px;
+}
+
+.action:hover {
+  cursor: pointer;
+}
+
+.action:hover span {
+  font-weight: 500;
 }

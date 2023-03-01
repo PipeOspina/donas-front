@@ -228,6 +228,11 @@ const NumberField = forwardRef<HTMLDivElement, NumberFieldProps>(
             ...props.InputProps,
             ref,
           }}
+          inputProps={{
+            ...props.inputProps,
+            className: styles.field,
+            pattern: 'd*',
+          }}
           value={
             valueState && valueState > Number.MAX_SAFE_INTEGER
               ? Number.MAX_SAFE_INTEGER

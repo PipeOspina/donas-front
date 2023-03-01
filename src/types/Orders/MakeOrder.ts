@@ -1,18 +1,26 @@
+import { ModelWithId } from '../Firestore';
+import { ProductModel } from '../Products/Product';
+
 export interface MakeOrderForm {
   steps: {
     activeStep: number;
     completedSteps: number[];
   };
   selectedProducts: {
-    index: number;
-    name: string;
-    price: number;
-    image: {
-      src: string;
-      alt: string;
-    };
-    quantity?: number;
+    productId: string;
+    quantity: number;
+    specs: {
+      quantity: number;
+      specs: {
+        index: number;
+        optionIndex: number | null;
+      }[];
+    }[];
   }[];
+  products: {
+    products: ModelWithId<ProductModel>[];
+    loading: boolean;
+  };
   billingInformation: {
     billingType: 'electronic' | 'charge';
     email: string;
