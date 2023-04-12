@@ -11,6 +11,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import { TransitionGroup } from 'react-transition-group';
 import MakeOrderProductSelectCarousel from './Carousel';
 import MakeOrderProductSelectError from './Error';
+import { FlavorFilter } from './FlavorFilter';
 import MakeOrderProductSelectQuantityCard from './QuantityCard';
 import MakeOrderProductSelectTotal from './Total';
 
@@ -42,6 +43,10 @@ export const MakeOrderProductSelect = () => {
       >
         Selección de productos
       </Typography>
+      <FlavorFilter
+        sx={{ width: 200, mb: 2 }}
+        size="small"
+      />
       <MakeOrderProductSelectCarousel
         onAddProduct={addProduct}
         onRemoveProduct={removeProduct}

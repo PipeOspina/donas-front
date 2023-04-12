@@ -24,6 +24,7 @@ const MakeOrderProductSelectCarousel: FC<
 
   const products = useWatch({ control, name: 'products.products' });
   const loading = useWatch({ control, name: 'products.loading' });
+  const flavorFilter = useWatch({ control, name: 'filters.flavor' });
 
   const id = useId();
   const isMobile = useMediaQuery((theme: Theme) =>
@@ -68,16 +69,20 @@ const MakeOrderProductSelectCarousel: FC<
       elements={
         loading
           ? loadingElements
-          : products.map((product) => (
-              <ProductCard
-                key={`MAKE_ORDER_PRODUCT_SELECT_CAROUSEL_PRODUCT_CARD_${id}_${product.id}`}
-                product={product}
-                selected={selectedProducts.some(
-                  ({ productId }) => productId === product.id,
-                )}
-                onClick={() => toggleSelectProduct(product)}
-              />
-            ))
+          : products
+              .filter(({ flavor }) =>
+                flavorFilter && flavor ? flavor === flavorFilter : true,
+              )
+              .map((product) => (
+                <ProductCard
+                  key={`MAKE_ORDER_PRODUCT_SELECT_CAROUSEL_PRODUCT_CARD_${id}_${product.id}`}
+                  product={product}
+                  selected={selectedProducts.some(
+                    ({ productId }) => productId === product.id,
+                  )}
+                  onClick={() => toggleSelectProduct(product)}
+                />
+              ))
       }
       arrowColor="primary"
     />

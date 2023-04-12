@@ -24,6 +24,7 @@ import {
   useFormContext,
   useWatch,
 } from 'react-hook-form';
+import ProductSpecsDialog from './ProductSpecsDialog';
 
 const textStyles: CSSProperties = {
   overflow: 'hidden',
@@ -40,6 +41,7 @@ const MakeOrderProductSelectQuantityCard: FC<
   MakeOrderProductSelectQuantityCardProps
 > = ({ field, index }) => {
   const [isFocus, setIsFocus] = useState(false);
+  const [openSpecs, setOpenSpecs] = useState(false);
 
   const { control } = useFormContext<MakeOrderForm>();
 
@@ -85,163 +87,173 @@ const MakeOrderProductSelectQuantityCard: FC<
   );
 
   return (
-    <Controller
-      name={`selectedProducts.${index}.quantity`}
-      rules={{
-        required: true,
-        min: defaultMin,
-      }}
-      render={({ field: { value, onChange, ...controllerField } }) => {
-        const { value: price, min }: ProductPriceModel = prices?.find(
-          ({ min: minQuantity, max: maxQuantity = 100_000 }) =>
-            value >= minQuantity && value <= maxQuantity,
-        ) ?? { min: defaultMin, shipping: 0, value: 0 };
+    <>
+      <Controller
+        name={`selectedProducts.${index}.quantity`}
+        rules={{
+          required: true,
+          min: defaultMin,
+        }}
+        render={({ field: { value, onChange, ...controllerField } }) => {
+          const { value: price, min }: ProductPriceModel = prices?.find(
+            ({ min: minQuantity, max: maxQuantity = 100_000 }) =>
+              value >= minQuantity && value <= maxQuantity,
+          ) ?? { min: defaultMin, shipping: 0, value: 0 };
 
-        const error = handleIsError(value, min, 100_000);
-        const isError = !!error;
+          const error = handleIsError(value, min, 100_000);
+          const isError = !!error;
 
-        return (
-          <ClickAwayListener onClickAway={() => setIsFocus(false)}>
-            <div
-              className={clsx(styles.container, {
-                [styles.marginTop]: index !== 0,
-              })}
-              onClick={() => setIsFocus((current) => !current)}
-            >
-              <ListItem
-                alignItems="center"
-                sx={(theme) => ({
-                  outline: `1.5px solid ${
-                    theme.palette[isError ? 'error' : 'primary'][
-                      isFocus || isError ? 'main' : 'ultraLight'
-                    ]
-                  }`,
-                  borderRadius: theme.spacing(1),
+          return (
+            <ClickAwayListener onClickAway={() => setIsFocus(false)}>
+              <div
+                className={clsx(styles.container, {
+                  [styles.marginTop]: index !== 0,
                 })}
-                className={styles.listItem}
+                onClick={() => setIsFocus((current) => !current)}
               >
-                <ListItemAvatar
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
+                <ListItem
+                  alignItems="center"
+                  sx={(theme) => ({
+                    outline: `1.5px solid ${
+                      theme.palette[isError ? 'error' : 'primary'][
+                        isFocus || isError ? 'main' : 'ultraLight'
+                      ]
+                    }`,
+                    borderRadius: theme.spacing(1),
+                  })}
+                  className={styles.listItem}
                 >
-                  {image?.src ? (
-                    <Image
-                      src={image.src}
-                      alt={image.alt ?? ''}
-                      width={40}
-                      height={40}
-                      className={styles.image}
-                    />
-                  ) : (
-                    <Avatar
-                      alt={image?.alt ?? ''}
-                      sx={(theme) => ({
-                        bgcolor: theme.palette.primary.main,
-                      })}
-                    >
-                      {name?.replaceAll(' ', '').substring(0, 2)}
-                    </Avatar>
-                  )}
-                </ListItemAvatar>
-                <ListItemText
-                  primary={name}
-                  secondary={formatPrice(price * (value ?? 0))}
-                  primaryTypographyProps={{
-                    color: 'secondary',
-                    style: textStyles,
-                  }}
-                  secondaryTypographyProps={{
-                    color: 'primary',
-                    style: textStyles,
-                  }}
-                />
-                <div
-                  className={styles.quantityField}
-                  onClick={(e) => {
-                    isFocus && e.stopPropagation();
-                  }}
-                >
-                  <NumberField
-                    {...controllerField}
-                    key={field.id}
-                    value={value}
-                    onChange={(newValue) => {
-                      onChange({ target: { value: newValue ?? null } });
+                  <ListItemAvatar
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
                     }}
-                    autoComplete="off"
-                    onFocus={() => setIsFocus(true)}
-                    size="small"
-                    style={{ width: 100 }}
-                    minError=""
-                    maxError=""
-                    thousandSeparator="."
-                    decimalSeparator=","
-                    controlsPlacement={isMobile ? 'start-end' : 'end'}
-                    label="Cantidad"
-                    decimalScale={0}
-                    allowNegative={false}
-                    min={min}
-                    max={defaultMax}
-                    step={isMobile ? 5 : 1}
+                  >
+                    {image?.src ? (
+                      <Image
+                        src={image.src}
+                        alt={image.alt ?? ''}
+                        width={40}
+                        height={40}
+                        className={styles.image}
+                      />
+                    ) : (
+                      <Avatar
+                        alt={image?.alt ?? ''}
+                        sx={(theme) => ({
+                          bgcolor: theme.palette.primary.main,
+                        })}
+                      >
+                        {name?.replaceAll(' ', '').substring(0, 2)}
+                      </Avatar>
+                    )}
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={name}
+                    secondary={formatPrice(price * (value ?? 0))}
+                    primaryTypographyProps={{
+                      color: 'secondary',
+                      style: textStyles,
+                    }}
+                    secondaryTypographyProps={{
+                      color: 'primary',
+                      style: textStyles,
+                    }}
                   />
-                </div>
-              </ListItem>
-              <Collapse
-                in={!isError && isFocus}
-                style={{ alignSelf: 'flex-start', width: '100%' }}
-              >
-                <div
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: 8,
-                  }}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <div className={styles.action}>
-                    <AddIcon
-                      color="primary"
-                      fontSize="inherit"
-                      style={{ fontSize: 16, marginRight: 4 }}
+                  <div
+                    className={styles.quantityField}
+                    onClick={(e) => {
+                      isFocus && e.stopPropagation();
+                    }}
+                  >
+                    <NumberField
+                      {...controllerField}
+                      key={field.id}
+                      value={value}
+                      onChange={(newValue) => {
+                        onChange({ target: { value: newValue ?? null } });
+                      }}
+                      autoComplete="off"
+                      onFocus={() => setIsFocus(true)}
+                      size="small"
+                      style={{ width: 100 }}
+                      minError=""
+                      maxError=""
+                      thousandSeparator="."
+                      decimalSeparator=","
+                      controlsPlacement={isMobile ? 'start-end' : 'end'}
+                      label="Cantidad"
+                      decimalScale={0}
+                      allowNegative={false}
+                      min={min}
+                      max={defaultMax}
+                      step={isMobile ? 5 : 1}
                     />
-                    <Typography
-                      variant="caption"
-                      color="primary"
-                    >
-                      {isMobile
-                        ? 'Especificaciones'
-                        : 'Agregar especificaciones'}
-                    </Typography>
                   </div>
-                  <div className={styles.action}>
-                    <Typography
-                      variant="caption"
-                      color="primary"
-                    >
-                      Más información ({formatPrice(price)} c/u)
-                    </Typography>
-                  </div>
-                </div>
-              </Collapse>
-              <Collapse in={isError}>
-                <Typography
-                  variant="caption"
-                  color="error"
-                  className={styles.errorMessage}
+                </ListItem>
+                <Collapse
+                  in={!isError && isFocus}
+                  style={{ alignSelf: 'flex-start', width: '100%' }}
                 >
-                  {error}
-                </Typography>
-              </Collapse>
-            </div>
-          </ClickAwayListener>
-        );
-      }}
-      control={control}
-    />
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: 8,
+                    }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <div
+                      className={styles.action}
+                      onClick={() => setOpenSpecs(true)}
+                    >
+                      <AddIcon
+                        color="primary"
+                        fontSize="inherit"
+                        style={{ fontSize: 16, marginRight: 4 }}
+                      />
+                      <Typography
+                        variant="caption"
+                        color="primary"
+                      >
+                        {isMobile
+                          ? 'Especificaciones'
+                          : 'Agregar especificaciones'}
+                      </Typography>
+                    </div>
+                    <div className={styles.action}>
+                      <Typography
+                        variant="caption"
+                        color="primary"
+                      >
+                        Más información ({formatPrice(price)} c/u)
+                      </Typography>
+                    </div>
+                  </div>
+                </Collapse>
+                <Collapse in={isError}>
+                  <Typography
+                    variant="caption"
+                    color="error"
+                    className={styles.errorMessage}
+                  >
+                    {error}
+                  </Typography>
+                </Collapse>
+              </div>
+            </ClickAwayListener>
+          );
+        }}
+        control={control}
+      />
+      <ProductSpecsDialog
+        open={openSpecs}
+        index={index}
+        onClose={() => setOpenSpecs(false)}
+      />
+    </>
   );
 };
 

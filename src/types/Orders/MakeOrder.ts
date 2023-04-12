@@ -1,5 +1,5 @@
 import { ModelWithId } from '../Firestore';
-import { ProductModel } from '../Products/Product';
+import { ProductFlavor, ProductModel } from '../Products/Product';
 
 export interface MakeOrderForm {
   steps: {
@@ -21,6 +21,7 @@ export interface MakeOrderForm {
     products: ModelWithId<ProductModel>[];
     loading: boolean;
   };
+  filters: { flavor: ProductFlavor | null };
   billingInformation: {
     billingType: 'electronic' | 'charge';
     email: string;

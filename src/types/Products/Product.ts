@@ -10,12 +10,15 @@ export interface ProductImageModel {
   alt: string;
 }
 
+export type ProductFlavor = 'sweet' | 'salty';
+
 export interface ProductModel {
   sortIndex: number;
   name: string;
   prices: ProductPriceModel[];
   specs: ProductSpec[];
   image: ProductImageModel;
+  flavor?: ProductFlavor;
 }
 
 export type ProductSpec = {
